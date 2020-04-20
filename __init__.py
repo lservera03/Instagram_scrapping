@@ -1,7 +1,7 @@
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.keys import Keys
 import time
+
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 
 from model.Follower import Follower
@@ -10,7 +10,7 @@ from model.Following import Following
 url = 'https://www.instagram.com/'
 browser = webdriver.Chrome()
 actions = ActionChains(browser)
-wait = 4
+wait = 5
 
 followers = []
 following = []
@@ -130,9 +130,21 @@ def show_no_follow():
         print(no.nick)
 
 
+def check_if_code():
+    time.sleep(wait)
+    try:
+        code = browser.find_element_by_css_selector('._2hvTZ.pexuQ.zyHYP')
+        code.send_keys(str(input()))
+        button = browser.find_element_by_css_selector('.sqdOP.L3NKy.y3zKF')
+        button.click()
+    except NoSuchElementException:
+        print('Without verification code')
+
+
 if __name__ == "__main__":
     open_browser()
     login()
+    check_if_code()
     close_pop_up()
     open_profile()
     open_followers()
